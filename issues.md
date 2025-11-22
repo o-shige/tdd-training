@@ -4,10 +4,10 @@
 
 | # | イシュー | TDDテスト対象 | 優先度 | 状態 |
 |---|----------|--------------|--------|------|
-| 1 | Docker Compose環境セットアップ | - | High | [ ] |
-| 2 | FastAPIスケルトン作成 | - | High | [ ] |
-| 3 | Next.jsスケルトン作成 | - | High | [ ] |
-| 4 | pytest環境構築 | - | High | [ ] |
+| 1 | Docker Compose環境セットアップ | - | High | [x] |
+| 2 | FastAPIスケルトン作成 | - | High | [x] |
+| 3 | Next.jsスケルトン作成 | - | High | [x] |
+| 4 | pytest環境構築 | - | High | [x] |
 | 5 | パスワードハッシュ化機能 | `test_password.py` | High | [ ] |
 | 6 | JWT生成・検証機能 | `test_jwt.py` | High | [ ] |
 
@@ -57,7 +57,7 @@
 
 | # | イシュー | 備考 | 状態 |
 |---|----------|------|------|
-| 26 | .gitignore作成 | Python + Node.js用 | [ ] |
+| 26 | .gitignore作成 | Python + Node.js用 | [x] |
 | 27 | CI/CD設定（GitHub Actions） | テスト自動実行 | [ ] |
 | 28 | エラーハンドリング共通化 | カスタム例外クラス | [ ] |
 | 29 | API仕様書（OpenAPI） | FastAPI自動生成 | [ ] |
