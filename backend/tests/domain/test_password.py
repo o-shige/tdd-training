@@ -1,9 +1,10 @@
 """パスワードハッシュ化機能のテスト
 
 TDDサイクル: Red -> Green -> Refactor
+要件: ユーザーのパスワードを安全にハッシュ化・検証する
 """
 
-from app.security.password import hash_password, verify_password
+from app.domain.password import hash_password, verify_password
 
 
 class TestHashPassword:
@@ -14,10 +15,10 @@ class TestHashPassword:
         hashed = hash_password(password)
         assert hashed != password
 
-    def test_ハッシュ値はbytes型で返される(self):
+    def test_ハッシュ値はstr型で返される(self):
         password = "mysecretpassword"
         hashed = hash_password(password)
-        assert isinstance(hashed, bytes)
+        assert isinstance(hashed, str)
 
     def test_同じパスワードでも毎回異なるハッシュが生成される(self):
         password = "mysecretpassword"
