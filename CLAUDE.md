@@ -67,6 +67,11 @@ TDDはユーザー主導の対話型で進める。エージェントは自律�
 - ユーザーが明示的に指示するまでコードを書かない
 - 選択肢がある場合は提示してユーザーに選ばせる
 
+### テストの粒度
+
+- **単純なテスト**（抽象メソッドの存在確認など）: まとめて3つ程度を一括で実施してOK
+- **複雑なテスト**（ビジネスロジック、バリデーションなど）: 1つずつ対話しながら実施
+
 ## Steering Configuration
 - Load entire `.kiro/steering/` as project memory
 - Default files: `product.md`, `tech.md`, `structure.md`
