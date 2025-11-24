@@ -48,11 +48,12 @@ def test_create_user_with_empty_email_raises_error():
         )
 
 
-def test_user_repository_interface_has_save_method():
-    """UserRepositoryインターフェースにsaveメソッドが定義されている"""
+def test_cannot_instantiate_abstract_user_repository():
+    """抽象クラスUserRepositoryは直接インスタンス化できない"""
     from app.domain.user_repository import UserRepository
-
-    assert hasattr(UserRepository, 'save')
+    
+    with pytest.raises(TypeError):
+        UserRepository()
 
 
 def test_user_repository_interface_has_find_by_email_method():
@@ -74,10 +75,8 @@ def test_user_repository_interface_has_find_by_id_method():
 def test_user_with_any_valid_email_is_created(email):
     """有効なメールアドレスならUserを作成できる（プロパティベースド）"""
     user = User(email=email, hashed_password="valid_password")
-    # Userが正常に作成され、メールアドレスが設定されている
-    assert user.email is not None
-    assert "@" in user.email
-
+    # 生成されたメールアドレスが正しく設定されている
+    assert user.email == email
 
 @given(st.text(min_size=1))
 def test_user_with_any_non_empty_password_is_created(password):

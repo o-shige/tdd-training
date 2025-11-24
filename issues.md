@@ -17,8 +17,8 @@
 
 | # | イシュー | TDDテスト対象 | 優先度 | 状態 |
 |---|----------|--------------|--------|------|
-| 7 | Userドメインエンティティ | `test_user_registration.py` | High | [ ] |
-| 8 | UserRepositoryインターフェース | `test_user_registration.py` | High | [ ] |
+| 7 | Userドメインエンティティ | `test_user_registration.py` | High | [ｘ] |
+| 8 | UserRepositoryインターフェース | `test_user_registration.py` | High | [x/re] |
 | 9 | RegistrationService | `test_user_registration.py` | High | [ ] |
 | 10 | SQLAlchemy UserRepository実装 | `test_user_repository.py` | High | [ ] |
 | 11 | 登録APIエンドポイント | `test_registration_endpoint.py` | High | [ ] |
