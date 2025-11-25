@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: TDD認証システムの初期プロジェクト構成を追加\n\n- Docker Compose環境（PostgreSQL, Redis, FastAPI, Next.js）\n- バックエンド/フロントエンドのスケルトン構成\n- 4週間TDDトレーニングプランをREADMEに記載\n- .gitignoreと課題管理用issues.mdを追加\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "mcp__github__get_file_contents",
+      "mcp__github__list_pull_requests",
+      "Bash(mkdir:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(git checkout:*)",
+      "mcp__github__create_pull_request",
+      "Bash(gh pr create:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.coderabbit.ai)",
+      "Bash(npm install:*)",
+      "Bash(where:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(pip install:*)",
+      "Bash(echo:*)",
+      "Bash(docker compose:*)",
+      "Bash(git -C \"C:\\Users\\creat\\OneDrive\\ドキュメント\\programing\\tdd-training\" status)",
+      "Bash(git -C \"C:\\Users\\creat\\OneDrive\\ドキュメント\\programing\\tdd-training\" diff)",
+      "Bash(git -C \"C:\\Users\\creat\\OneDrive\\ドキュメント\\programing\\tdd-training\" log --oneline -3)",
+      "Bash(git -C \"C:\\Users\\creat\\OneDrive\\ドキュメント\\programing\\tdd-training\" add backend/app/domain/user.py backend/tests/domain/test_user_registration.py .gitignore)",
+      "Bash(git -C:*)",
+      "Bash(powershell:*)",
+      "mcp__github__get_issue"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

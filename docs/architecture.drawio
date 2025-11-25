@@ -1,0 +1,125 @@
+<mxfile host="app.diagrams.net" modified="2024-01-01T00:00:00.000Z" agent="5.0" etag="architecture" version="21.0.0" type="device">
+  <diagram name="User Registration Architecture" id="user-registration-arch">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="TDD Training - User Registration Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="400" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Domain Layer Box -->
+        <mxCell id="domain-layer" value="Domain Layer (ドメイン層)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontStyle=1;fontSize=14" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="800" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- User Entity -->
+        <mxCell id="user-entity" value="&lt;b&gt;User&lt;/b&gt;&lt;br&gt;(Pydantic BaseModel)&lt;hr&gt;- id: UUID&lt;br&gt;- email: EmailStr&lt;br&gt;- hashed_password: str&lt;br&gt;- created_at: datetime&lt;br&gt;- is_active: bool" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="120" y="120" width="180" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- UserRepository Interface -->
+        <mxCell id="user-repository" value="&lt;b&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&lt;br&gt;UserRepository&lt;/b&gt;&lt;hr&gt;+ save(user) → User&lt;br&gt;+ find_by_email(email) → User?&lt;br&gt;+ find_by_id(id) → User?" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="360" y="120" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- RegistrationService -->
+        <mxCell id="registration-service" value="&lt;b&gt;RegistrationService&lt;/b&gt;&lt;hr&gt;- _repository: UserRepository&lt;br&gt;- _hasher: Callable&lt;hr&gt;+ register(email, password) → User" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="640" y="120" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Password Module -->
+        <mxCell id="password-module" value="&lt;b&gt;password.py&lt;/b&gt;&lt;hr&gt;+ hash_password(pwd) → str&lt;br&gt;+ verify_password(pwd, hash) → bool" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="640" y="250" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Test Layer Box -->
+        <mxCell id="test-layer" value="Test Layer (テスト層)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;fontStyle=1;fontSize=14" vertex="1" parent="1">
+          <mxGeometry x="80" y="400" width="800" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- InMemoryUserRepository -->
+        <mxCell id="inmemory-repo" value="&lt;b&gt;InMemoryUserRepository&lt;/b&gt;&lt;br&gt;(テスト用実装)&lt;hr&gt;- _users: dict&lt;hr&gt;+ save/find_by_email/find_by_id" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="120" y="440" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Test Cases -->
+        <mxCell id="test-cases" value="&lt;b&gt;test_user_registration.py&lt;/b&gt;&lt;hr&gt;- User Entity Tests&lt;br&gt;- Repository Interface Tests&lt;br&gt;- RegistrationService Tests&lt;br&gt;- Property-based Tests (Hypothesis)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="400" y="440" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows -->
+        <!-- RegistrationService uses UserRepository -->
+        <mxCell id="edge1" value="uses" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0" edge="1" parent="1" source="registration-service" target="user-repository">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- RegistrationService uses Password -->
+        <mxCell id="edge2" value="uses" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0" edge="1" parent="1" source="registration-service" target="password-module">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- UserRepository returns User -->
+        <mxCell id="edge3" value="returns" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0" edge="1" parent="1" source="user-repository" target="user-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- RegistrationService creates User -->
+        <mxCell id="edge4" value="creates" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0;exitY=0.8;exitDx=0;exitDy=0;entryX=1;entryY=0.7;entryDx=0;entryDy=0" edge="1" parent="1" source="registration-service" target="user-entity">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="340" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- InMemoryRepo implements UserRepository -->
+        <mxCell id="edge5" value="implements" style="endArrow=block;endSize=16;endFill=0;dashed=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0" edge="1" parent="1" source="inmemory-repo" target="user-repository">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="230" y="370" />
+              <mxPoint x="470" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Test uses InMemoryRepo -->
+        <mxCell id="edge6" value="uses" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0" edge="1" parent="1" source="test-cases" target="inmemory-repo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend-title" value="凡例" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="680" y="440" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656" vertex="1" parent="1">
+          <mxGeometry x="680" y="465" width="20" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend1-text" value="Entity / Data" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="705" y="460" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="legend2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="680" y="490" width="20" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend2-text" value="Interface" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="705" y="485" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="legend3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="1">
+          <mxGeometry x="680" y="515" width="20" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend3-text" value="Service" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="705" y="510" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="legend4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="680" y="540" width="20" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend4-text" value="Utility" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="705" y="535" width="100" height="25" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

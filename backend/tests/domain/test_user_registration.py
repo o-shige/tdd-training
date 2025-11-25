@@ -5,6 +5,8 @@ from hypothesis import given, strategies as st
 from pydantic import ValidationError
 
 from app.domain.user import User
+from app.domain.user_repository import UserRepository
+from app.domain.registration_service import RegistrationService
 
 
 def test_create_user_with_valid_attributes():
@@ -92,3 +94,110 @@ def test_user_always_has_valid_uuid(email, password):
     user = User(email=email, hashed_password=password)
     assert user.id is not None
     assert user.id.version == 4  # UUID v4
+
+
+# RegistrationService テスト
+
+class InMemoryUserRepository(UserRepository):
+    """テスト用のインメモリUserRepository実装"""
+
+    def __init__(self):
+        self._users: dict[str, User] = {}
+
+    def save(self, user: User) -> User:
+        self._users[user.email] = user
+        return user
+
+    def find_by_email(self, email: str) -> User | None:
+        return self._users.get(email)
+
+    def find_by_id(self, user_id) -> User | None:
+        for user in self._users.values():
+            if user.id == user_id:
+                return user
+        return None
+
+
+def test_register_user_with_valid_data():
+    """有効なデータでユーザーを登録できる"""
+    # Arrange
+    repository = InMemoryUserRepository()
+    service = RegistrationService(repository)
+
+    # Act
+    user = service.register("test@example.com", "password123")
+
+    # Assert
+    assert user.email == "test@example.com"
+
+
+def test_registered_user_is_saved_to_repository():
+    """登録したユーザーがリポジトリに保存される"""
+    # Arrange
+    repository = InMemoryUserRepository()
+    service = RegistrationService(repository)
+
+    # Act
+    service.register("test@example.com", "password123")
+
+    # Assert
+    saved_user = repository.find_by_email("test@example.com")
+    assert saved_user is not None
+    assert saved_user.email == "test@example.com"
+
+
+def test_password_is_hashed_when_registered():
+    """登録時にパスワードがハッシュ化される"""
+    # Arrange
+    repository = InMemoryUserRepository()
+    service = RegistrationService(repository)
+
+    # Act
+    user = service.register("test@example.com", "password123")
+
+    # Assert
+    assert user.hashed_password != "password123"
+
+
+def test_register_with_duplicate_email_raises_error():
+    """既存のメールアドレスで登録するとエラーになる"""
+    # Arrange
+    repository = InMemoryUserRepository()
+    service = RegistrationService(repository)
+    service.register("test@example.com", "password123")
+
+    # Act & Assert
+    with pytest.raises(ValueError):
+        service.register("test@example.com", "another_password")
+
+
+# RegistrationService プロパティベースドテスト
+
+# テスト用の高速ハッシュ関数（bcryptは遅いのでテストでは使わない）
+def fast_hash(password: str) -> str:
+    return f"hashed_{password}"
+
+
+@given(st.emails(), st.text(min_size=8, max_size=100))
+def test_any_valid_registration_succeeds(email, password):
+    """有効なメールとパスワードなら常に登録できる（プロパティベースド）"""
+    repository = InMemoryUserRepository()
+    service = RegistrationService(repository, hasher=fast_hash)
+
+    user = service.register(email, password)
+
+    assert user.email is not None  # メールが設定されている
+    assert "@" in user.email  # 有効なメール形式
+    assert user.hashed_password != password  # ハッシュ化されている
+
+
+@given(st.emails(), st.text(min_size=8, max_size=100))
+def test_registered_user_always_saved_to_repository(email, password):
+    """登録されたユーザーは常にリポジトリに保存される（プロパティベースド）"""
+    repository = InMemoryUserRepository()
+    service = RegistrationService(repository, hasher=fast_hash)
+
+    user = service.register(email, password)
+
+    saved = repository.find_by_email(user.email)  # 正規化後のメールで検索
+    assert saved is not None
