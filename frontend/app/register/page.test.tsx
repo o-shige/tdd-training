@@ -23,5 +23,12 @@ describe('RegisterPage', () => {
     // メールアドレス入力フィールドが存在することを確認
     expect(screen.getByLabelText(/メールアドレス/i)).toBeInTheDocument()
   })
+
+  it('パスワード入力フィールドが表示される', () => {
+    render(<RegisterPage />)
+    
+    // パスワード入力フィールドが存在することを確認
+    expect(screen.getByLabelText(/パスワード/i)).toBeInTheDocument()
+  })
 })
 

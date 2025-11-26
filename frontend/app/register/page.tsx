@@ -5,6 +5,8 @@ export default function RegisterPage() {
       <form>
         <label htmlFor="email">メールアドレス</label>
         <input type="email" id="email" name="email" />
+        <label htmlFor="password">パスワード</label>
+        <input type="password" id="password" name="password" />
       </form>
     </div>
   )
