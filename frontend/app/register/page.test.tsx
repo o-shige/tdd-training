@@ -47,5 +47,23 @@ describe('RegisterPage', () => {
     // エラーメッセージが表示されることを確認
     expect(screen.getByText(/メールアドレスは必須です/i)).toBeInTheDocument()
   })
+
+  it('パスワードが短い場合、エラーメッセージが表示される', async () => {
+    const user = userEvent.setup()
+    render(<RegisterPage />)
+    
+    // メールアドレスと短いパスワードを入力
+    const emailInput = screen.getByLabelText(/メールアドレス/i)
+    await user.type(emailInput, 'test@example.com')
+    const passwordInput = screen.getByLabelText(/パスワード/i)
+    await user.type(passwordInput, '12') // 2文字（短い）
+    
+    // フォーム送信
+    const submitButton = screen.getByRole('button', { name: /登録/i })
+    await user.click(submitButton)
+    
+    // エラーメッセージが表示されることを確認
+    expect(screen.getByText(/パスワードは3文字以上で入力してください/i)).toBeInTheDocument()
+  })
 })
 
