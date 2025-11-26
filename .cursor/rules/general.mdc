@@ -1,0 +1,82 @@
+---
+alwaysApply: true
+---
+
+# AI-DLC and Spec-Driven Development
+
+Kiro-style Spec Driven Development implementation on AI-DLC (AI Development Life Cycle)
+
+## Project Context
+
+### Paths
+- Steering: `.kiro/steering/`
+- Specs: `.kiro/specs/`
+
+### Steering vs Specification
+
+**Steering** (`.kiro/steering/`) - Guide AI with project-wide rules and context
+**Specs** (`.kiro/specs/`) - Formalize development process for individual features
+
+### Active Specifications
+- Check `.kiro/specs/` for active specifications
+- Use `/kiro:spec-status [feature-name]` to check progress
+
+## Development Guidelines
+- Think in English, generate responses in Japanese. All Markdown content written to project files (e.g., requirements.md, design.md, tasks.md, research.md, validation reports) MUST be written in the target language configured for this specification (see spec.json.language).
+
+## Minimal Workflow
+- Phase 0 (optional): `/kiro:steering`, `/kiro:steering-custom`
+- Phase 1 (Specification):
+  - `/kiro:spec-init "description"`
+  - `/kiro:spec-requirements {feature}`
+  - `/kiro:validate-gap {feature}` (optional: for existing codebase)
+  - `/kiro:spec-design {feature} [-y]`
+  - `/kiro:validate-design {feature}` (optional: design review)
+  - `/kiro:spec-tasks {feature} [-y]`
+- Phase 2 (Implementation): `/kiro:spec-impl {feature} [tasks]`
+  - `/kiro:validate-impl {feature}` (optional: after implementation)
+- Progress check: `/kiro:spec-status {feature}` (use anytime)
+
+## Development Rules
+- 3-phase approval workflow: Requirements → Design → Tasks → Implementation
+- Human review required each phase; use `-y` only for intentional fast-track
+- Keep steering current and verify alignment with `/kiro:spec-status`
+- Follow the user's instructions precisely, and within that scope act autonomously: gather the necessary context and complete the requested work end-to-end in this run, asking questions only when essential information is missing or the instructions are critically ambiguous.
+ - t_wadaやtidy first, kent beckの考えのTDDでチューターして
+
+## TDD対話ルール
+
+TDDはユーザー主導の対話型で進める。エージェントは自律的にコードを書かない。
+
+### 各フェーズでの振る舞い
+
+1. **Red Phase（テスト作成）**
+   - テストケースを提案し、ユーザーの承認を待つ
+   - 承認後にテストコードを書く
+   - テスト実行前にユーザーに確認
+
+2. **Green Phase（実装）**
+   - 実装方針を提示し、ユーザーの承認を待つ
+   - 最小限の実装案を説明してから書く
+   - ユーザーが「書いて」と言うまで実装しない
+
+3. **Refactor Phase**
+   - リファクタリング案を提示
+   - 変更不要の場合もユーザーに判断を委ねる
+
+### 対話の原則
+
+- 各ステップで一旦停止し、ユーザーの指示を待つ
+- 「〜しますか？」「〜でよいですか？」と確認する
+- ユーザーが明示的に指示するまでコードを書かない
+- 選択肢がある場合は提示してユーザーに選ばせる
+
+### テストの粒度
+
+- **単純なテスト**（抽象メソッドの存在確認など）: まとめて3つ程度を一括で実施してOK
+- **複雑なテスト**（ビジネスロジック、バリデーションなど）: 1つずつ対話しながら実施
+
+## Steering Configuration
+- Load entire `.kiro/steering/` as project memory
+- Default files: `product.md`, `tech.md`, `structure.md`
+- Custom files are supported (managed via `/kiro:steering-custom`)

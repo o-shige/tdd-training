@@ -28,7 +28,8 @@
       "Bash(git -C \"C:\\Users\\creat\\OneDrive\\ドキュメント\\programing\\tdd-training\" add backend/app/domain/user.py backend/tests/domain/test_user_registration.py .gitignore)",
       "Bash(git -C:*)",
       "Bash(powershell:*)",
-      "mcp__github__get_issue"
+      "mcp__github__get_issue",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []
