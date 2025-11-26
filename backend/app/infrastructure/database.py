@@ -13,10 +13,20 @@ class User(Base):  # ←このBase
     ...
 """
 
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, String, DateTime, Boolean
+from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy import Column, String, DateTime, Boolean, create_engine
 import uuid
+import os
 from datetime import datetime, timezone
+
+# データベース接続URL
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:password@postgres:5432/auth_db")
+
+# SQLAlchemyエンジン作成
+engine = create_engine(DATABASE_URL)
+
+# セッションファクトリー作成
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # すべてのSQLAlchemyモデルの基底クラス
 Base = declarative_base()
