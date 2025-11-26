@@ -21,6 +21,7 @@
 
 from abc import ABC, abstractmethod
 from uuid import UUID
+from typing import Union
 
 from app.domain.user import User
 
@@ -53,7 +54,7 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    def find_by_email(self, email: str) -> User | None:
+    def find_by_email(self, email: str) -> Union[User, None]:
         """メールアドレスでユーザーを探す
 
         【なぜNoneを返す可能性がある？】
@@ -63,7 +64,7 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self, id: UUID) -> User | None:
+    def find_by_id(self, id: UUID) -> Union[User, None]:
         """IDでユーザーを探す
 
         【emailとidの違いは？】
