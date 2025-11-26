@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { validateRegistrationForm } from './validation'
 
 export default function RegisterPage() {
   const [emailError, setEmailError] = useState('')
@@ -13,13 +14,11 @@ export default function RegisterPage() {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     
-    if (!email || email.trim() === '') {
-      setEmailError('メールアドレスは必須です')
-      return
-    }
-    
-    if (!password || password.length < 8) {
-      setPasswordError('パスワードは8文字以上で入力してください')
+    // バリデーション関数を使用
+    const validation = validateRegistrationForm(email, password)
+    if (!validation.isValid) {
+      setEmailError(validation.emailError || '')
+      setPasswordError(validation.passwordError || '')
       return
     }
     
