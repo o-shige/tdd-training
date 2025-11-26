@@ -3,6 +3,7 @@
 import pytest
 from hypothesis import given, strategies as st
 from pydantic import ValidationError
+from typing import Union, Dict
 
 from app.domain.user import User
 from app.domain.user_repository import UserRepository
@@ -102,16 +103,16 @@ class InMemoryUserRepository(UserRepository):
     """テスト用のインメモリUserRepository実装"""
 
     def __init__(self):
-        self._users: dict[str, User] = {}
+        self._users: Dict[str, User] = {}
 
     def save(self, user: User) -> User:
         self._users[user.email] = user
         return user
 
-    def find_by_email(self, email: str) -> User | None:
+    def find_by_email(self, email: str) -> Union[User, None]:
         return self._users.get(email)
 
-    def find_by_id(self, user_id) -> User | None:
+    def find_by_id(self, user_id) -> Union[User, None]:
         for user in self._users.values():
             if user.id == user_id:
                 return user
