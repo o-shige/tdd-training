@@ -7,6 +7,7 @@
  */
 
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import RegisterPage from './page'
 
 describe('RegisterPage', () => {
@@ -29,6 +30,22 @@ describe('RegisterPage', () => {
     
     // パスワード入力フィールドが存在することを確認
     expect(screen.getByLabelText(/パスワード/i)).toBeInTheDocument()
+  })
+
+  it('メールアドレスが空の場合、エラーメッセージが表示される', async () => {
+    const user = userEvent.setup()
+    render(<RegisterPage />)
+    
+    // パスワードのみ入力
+    const passwordInput = screen.getByLabelText(/パスワード/i)
+    await user.type(passwordInput, 'password123')
+    
+    // フォーム送信
+    const submitButton = screen.getByRole('button', { name: /登録/i })
+    await user.click(submitButton)
+    
+    // エラーメッセージが表示されることを確認
+    expect(screen.getByText(/メールアドレスは必須です/i)).toBeInTheDocument()
   })
 })
 
