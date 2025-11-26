@@ -141,5 +141,35 @@ describe('RegisterPage', () => {
       expect(screen.getByText(/このメールアドレスは既に登録されています/i)).toBeInTheDocument()
     })
   })
+
+  it('登録成功時に成功メッセージが表示される', async () => {
+    const user = userEvent.setup()
+    // API成功レスポンスをモック
+    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 201,
+      json: async () => ({
+        id: '123',
+        email: 'test@example.com'
+      })
+    })
+
+    render(<RegisterPage />)
+    
+    // 有効なデータを入力
+    const emailInput = screen.getByLabelText(/メールアドレス/i)
+    await user.type(emailInput, 'test@example.com')
+    const passwordInput = screen.getByLabelText(/パスワード/i)
+    await user.type(passwordInput, 'password123')
+    
+    // フォーム送信
+    const submitButton = screen.getByRole('button', { name: /登録/i })
+    await user.click(submitButton)
+    
+    // 成功メッセージが表示されることを確認
+    await waitFor(() => {
+      expect(screen.getByText(/登録が完了しました/i)).toBeInTheDocument()
+    })
+  })
 })
 

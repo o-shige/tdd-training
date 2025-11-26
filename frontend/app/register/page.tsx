@@ -5,6 +5,7 @@ import { useState } from 'react'
 export default function RegisterPage() {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -24,6 +25,7 @@ export default function RegisterPage() {
     
     setEmailError('')
     setPasswordError('')
+    setSuccessMessage('')
     
     // API呼び出し
     fetch('http://localhost:8000/api/register', {
@@ -49,8 +51,13 @@ export default function RegisterPage() {
           return
         }
         const data = await response.json()
-        // 登録成功時の処理（TODO: 成功メッセージ表示やリダイレクト）
-        console.log('登録成功:', data)
+        // 登録成功時の処理
+        setSuccessMessage('登録が完了しました')
+        // フォームをリセット
+        const form = e.currentTarget
+        if (form) {
+          form.reset()
+        }
       })
       .catch((error) => {
         console.error('エラー:', error)
@@ -68,6 +75,7 @@ export default function RegisterPage() {
         <label htmlFor="password">パスワード</label>
         <input type="password" id="password" name="password" />
         {passwordError && <div>{passwordError}</div>}
+        {successMessage && <div>{successMessage}</div>}
         <button type="submit">登録</button>
       </form>
     </div>
